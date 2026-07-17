@@ -1,0 +1,109 @@
+{
+  "model_id": "7cadb24d",
+  "name": "churn_demo",
+  "created_at": 1784300759.0781004,
+  "target_column": "churn",
+  "positive_class": "1",
+  "n_rows_used": 5000,
+  "n_rows_dropped_missing": 0,
+  "n_features": 7,
+  "feature_columns": [
+    "tenure",
+    "customer_satisfaction",
+    "num_complaints",
+    "late_payments",
+    "monthlycharges",
+    "contract_one_year",
+    "contract_two_year"
+  ],
+  "base_rate": 0.0982,
+  "validation": {
+    "test_set_size": 1250,
+    "auc_roc": 0.6645,
+    "precision_at_top15pct": 0.2074,
+    "recall_at_top15pct": 0.3171,
+    "brier_score": 0.0853,
+    "calibration_table": [
+      {
+        "predicted": 0.0327,
+        "observed": 0.032,
+        "n": 125
+      },
+      {
+        "predicted": 0.045,
+        "observed": 0.064,
+        "n": 125
+      },
+      {
+        "predicted": 0.0569,
+        "observed": 0.04,
+        "n": 125
+      },
+      {
+        "predicted": 0.0677,
+        "observed": 0.064,
+        "n": 125
+      },
+      {
+        "predicted": 0.0796,
+        "observed": 0.088,
+        "n": 125
+      },
+      {
+        "predicted": 0.0923,
+        "observed": 0.096,
+        "n": 125
+      },
+      {
+        "predicted": 0.1072,
+        "observed": 0.104,
+        "n": 125
+      },
+      {
+        "predicted": 0.1231,
+        "observed": 0.128,
+        "n": 125
+      },
+      {
+        "predicted": 0.1504,
+        "observed": 0.128,
+        "n": 125
+      },
+      {
+        "predicted": 0.2306,
+        "observed": 0.24,
+        "n": 125
+      }
+    ]
+  },
+  "feature_importance": [
+    {
+      "feature": "contract_two_year",
+      "coefficient": -0.8984
+    },
+    {
+      "feature": "contract_one_year",
+      "coefficient": -0.5076
+    },
+    {
+      "feature": "customer_satisfaction",
+      "coefficient": -0.3246
+    },
+    {
+      "feature": "num_complaints",
+      "coefficient": 0.1983
+    },
+    {
+      "feature": "late_payments",
+      "coefficient": 0.1568
+    },
+    {
+      "feature": "monthlycharges",
+      "coefficient": -0.1393
+    },
+    {
+      "feature": "tenure",
+      "coefficient": -0.0914
+    }
+  ]
+}
