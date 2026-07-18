@@ -125,8 +125,11 @@ def predict(model_id: str, req: PredictRequest):
 
 
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 FRONTEND_PATH = os.path.join(os.path.dirname(__file__), "frontend.html")
+DASHBOARD_PATH = os.path.join(os.path.dirname(__file__), "dashboard.html")
+REPORTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "reports")
 
 @app.get("/", response_class=HTMLResponse)
 def serve_frontend():
@@ -134,10 +137,21 @@ def serve_frontend():
         return f.read()
 
 
+@app.get("/dashboard", response_class=HTMLResponse)
+def serve_dashboard():
+    with open(DASHBOARD_PATH, "r") as f:
+        return f.read()
+
+
+app.mount("/reports", StaticFiles(directory=REPORTS_DIR), name="reports")
+
+
 @app.get("/status")
 def status():
     return {
         "service": "Risk Scoring API",
         "docs": "/docs",
+        "dashboard": "/dashboard",
+        "reports": ["/reports/Customer_Retention_Decision_Report.pdf", "/reports/Project_Guide.pdf"],
         "endpoints": ["/health", "/train", "/models", "/models/{model_id}", "/predict/{model_id}"],
     }

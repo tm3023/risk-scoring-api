@@ -7,6 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app/ ./app/
 COPY models_store/ ./models_store/
+COPY reports/ ./reports/
 
 EXPOSE 8000
 
