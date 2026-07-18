@@ -12,14 +12,20 @@ Ships with one pre-trained model (`7cadb24d`, trained on a 5,000-row churn
 sample) so there is something to query immediately after deployment,
 without needing to train anything first.
 
-A working deployment and a simple frontend built on top of this API are
-available at [risk-scoring-api-1tct.onrender.com](https://risk-scoring-api-1tct.onrender.com).
+A working deployment is available at
+[risk-scoring-api-1tct.onrender.com](https://risk-scoring-api-1tct.onrender.com),
+serving three things from one place: a frontend demo of this API, the full
+interactive churn analytics case study this project grew out of and the
+formal written reports produced alongside it.
 
 ## Endpoints
 
 | Method | Path | What it does |
 |---|---|---|
-| GET | `/` | Frontend demo page |
+| GET | `/` | Frontend demo of this API |
+| GET | `/dashboard` | Interactive churn analytics case study dashboard |
+| GET | `/reports/Customer_Retention_Decision_Report.pdf` | Formal decision report |
+| GET | `/reports/Project_Guide.pdf` | One-page guide to the whole project |
 | GET | `/health` | Liveness check |
 | GET | `/status` | Service metadata and endpoint list |
 | POST | `/train` | Upload a CSV, get back a trained and validated model |
@@ -72,7 +78,10 @@ instance wakes up.
 
 - `app/main.py`: FastAPI application and route definitions
 - `app/ml.py`: training, validation and prediction logic
-- `app/frontend.html`: the demo page served at `/`
+- `app/frontend.html`: the API demo page served at `/`
+- `app/dashboard.html`: the churn analytics case study, served at `/dashboard`
+- `reports/`: the formal decision report and project guide, served as
+  static downloads under `/reports/`
 - `models_store/`: persisted trained models (the seeded demo model ships
   here and is tracked in git; models trained afterward are not persisted
   on free-tier hosting, see above)
