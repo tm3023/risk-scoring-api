@@ -13,17 +13,19 @@ sample) so there is something to query immediately after deployment,
 without needing to train anything first.
 
 A working deployment is available at
-[risk-scoring-api-1tct.onrender.com](https://risk-scoring-api-1tct.onrender.com),
-serving three things from one place: a frontend demo of this API, the full
-interactive churn analytics case study this project grew out of and the
-formal written reports produced alongside it.
+[risk-scoring-api-1tct.onrender.com](https://risk-scoring-api-1tct.onrender.com).
+The root page is a single-page app with a persistent top navigation bar
+switching between the full interactive churn analytics case study and a
+live demo of this API, both on the same URL. The formal written reports
+produced alongside the case study are linked from there and also
+downloadable directly.
 
 ## Endpoints
 
 | Method | Path | What it does |
 |---|---|---|
-| GET | `/` | Frontend demo of this API |
-| GET | `/dashboard` | Interactive churn analytics case study dashboard |
+| GET | `/` | Unified app: case study dashboard and live API demo, switchable via the top nav |
+| GET | `/dashboard` | Direct link to the case study dashboard alone |
 | GET | `/reports/Customer_Retention_Decision_Report.pdf` | Formal decision report |
 | GET | `/reports/Project_Guide.pdf` | One-page guide to the whole project |
 | GET | `/health` | Liveness check |
@@ -78,8 +80,9 @@ instance wakes up.
 
 - `app/main.py`: FastAPI application and route definitions
 - `app/ml.py`: training, validation and prediction logic
-- `app/frontend.html`: the API demo page served at `/`
-- `app/dashboard.html`: the churn analytics case study, served at `/dashboard`
+- `app/index_unified.html`: the single-page app served at `/`, combining
+  the case study dashboard and the live API demo behind a shared nav bar
+- `app/dashboard.html`: the case study dashboard alone, served at `/dashboard`
 - `reports/`: the formal decision report and project guide, served as
   static downloads under `/reports/`
 - `models_store/`: persisted trained models (the seeded demo model ships
