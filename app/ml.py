@@ -165,6 +165,22 @@ def train_model(df: pd.DataFrame, target_column: str, feature_columns=None, mode
     return metadata
 
 
+class InvalidModelIdError(ValueError):
+    """Raised when a model_id doesn't match the expected format."""
+
+
+import re
+
+MODEL_ID_PATTERN = re.compile(r"^[a-f0-9]{8}$")
+
+def _validate_model_id(model_id: str):
+    """model_id is used directly in filesystem paths; reject anything that
+    isn't the expected 8-character hex format to prevent path traversal
+    (e.g. a model_id like '../../etc/passwd' resolving outside models_store)."""
+    if not MODEL_ID_PATTERN.match(model_id):
+        raise InvalidModelIdError("Invalid model_id format.")
+
+
 def list_models():
     out = []
     for meta_path in sorted(STORE_DIR.glob("*.json")):
@@ -179,6 +195,7 @@ def list_models():
 
 
 def get_model_metadata(model_id: str):
+    _validate_model_id(model_id)
     path = STORE_DIR / f"{model_id}.json"
     if not path.exists():
         return None
@@ -187,6 +204,7 @@ def get_model_metadata(model_id: str):
 
 
 def delete_model(model_id: str):
+    _validate_model_id(model_id)
     joblib_path = STORE_DIR / f"{model_id}.joblib"
     json_path = STORE_DIR / f"{model_id}.json"
     existed = joblib_path.exists()
@@ -196,6 +214,7 @@ def delete_model(model_id: str):
 
 
 def predict(model_id: str, records: list):
+    _validate_model_id(model_id)
     bundle_path = STORE_DIR / f"{model_id}.joblib"
     if not bundle_path.exists():
         return None

@@ -109,7 +109,10 @@ def models():
 
 @app.get("/models/{model_id}")
 def model_detail(model_id: str):
-    meta = ml.get_model_metadata(model_id)
+    try:
+        meta = ml.get_model_metadata(model_id)
+    except ml.InvalidModelIdError:
+        raise HTTPException(400, "Invalid model_id format.")
     if meta is None:
         raise HTTPException(404, f"No model with id '{model_id}'.")
     return meta
@@ -117,7 +120,10 @@ def model_detail(model_id: str):
 
 @app.delete("/models/{model_id}")
 def remove_model(model_id: str):
-    existed = ml.delete_model(model_id)
+    try:
+        existed = ml.delete_model(model_id)
+    except ml.InvalidModelIdError:
+        raise HTTPException(400, "Invalid model_id format.")
     if not existed:
         raise HTTPException(404, f"No model with id '{model_id}'.")
     return {"deleted": model_id}
@@ -127,7 +133,10 @@ def remove_model(model_id: str):
 def predict(model_id: str, req: PredictRequest):
     if not req.records:
         raise HTTPException(400, "records list is empty.")
-    results = ml.predict(model_id, req.records)
+    try:
+        results = ml.predict(model_id, req.records)
+    except ml.InvalidModelIdError:
+        raise HTTPException(400, "Invalid model_id format.")
     if results is None:
         raise HTTPException(404, f"No model with id '{model_id}'.")
     return {"model_id": model_id, "predictions": results}
