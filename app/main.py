@@ -44,9 +44,18 @@ app.add_middleware(
 
 from fastapi.responses import JSONResponse
 from fastapi.requests import Request
+import logging
+import traceback
+
+logger = logging.getLogger("risk_api")
+logging.basicConfig(level=logging.INFO)
 
 @app.exception_handler(Exception)
 async def unhandled_exception_handler(request: Request, exc: Exception):
+    logger.error(
+        "Unhandled exception on %s %s\n%s",
+        request.method, request.url.path, traceback.format_exc()
+    )
     return JSONResponse(
         status_code=500,
         content={"error": "internal_error", "detail": "Something went wrong processing this request. "
