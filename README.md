@@ -57,6 +57,20 @@ downloadable directly.
 
 ## Known limitations
 
+**Tested against messy, real-world-style data, not just clean structured
+data.** The training pipeline was stress-tested against a deliberately
+constructed dataset with the kind of quality issues real spreadsheets
+tend to have: missing values scattered across columns, a string-encoded
+imbalanced target, a high-cardinality identifier column and a completely
+empty leftover column. That last case is worth naming specifically: a
+single near-empty column being auto-selected as a feature would silently
+destroy nearly every row once combined with the missing-value handling.
+This is fixed: columns that are more than 50% empty are now excluded from
+auto-selected features before that can happen. This was found through
+deliberate stress-testing with constructed data, not validated against
+an actual client's dataset, since no client data has been run through it
+yet.
+
 **Storage is not persistent on free-tier hosting.** Render's free web
 services use an ephemeral filesystem: anything written while the app is
 running, including new models trained via `POST /train` after deployment,
